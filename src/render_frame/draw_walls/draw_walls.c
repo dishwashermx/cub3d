@@ -6,7 +6,7 @@
 /*   By: ghwa <ghwa@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 18:31:08 by ychng             #+#    #+#             */
-/*   Updated: 2024/08/06 11:04:29 by ghwa             ###   ########.fr       */
+/*   Updated: 2024/08/08 13:08:41 by ghwa             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,21 @@ void	set_correct_wall_dist(t_main *main, int i)
 	t_player	*player;
 	t_raycast	*raycast;
 	t_ray		*ray;
+	float		angle_diff;
 
 	player = &main->player;
 	raycast = &main->raycast;
 	ray = &raycast->rays[i];
-	raycast->correct_wall_dist = \
-		ray->distance * cos(ray->ray_angle - player->rotation_angle);
-	if (raycast->correct_wall_dist == 0)
+	angle_diff = ray->ray_angle - player->rotation_angle;
+	while (angle_diff > M_PI)
+		angle_diff -= 2 * M_PI;
+	while (angle_diff < -M_PI)
+		angle_diff += 2 * M_PI;
+	raycast->correct_wall_dist = ray->distance * cos(angle_diff);
+	if (raycast->correct_wall_dist < 0.1)
 		raycast->correct_wall_dist = 0.1;
 }
+
 
 void	set_wall_strip_height(t_main *main)
 {
