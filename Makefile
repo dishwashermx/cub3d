@@ -10,7 +10,7 @@ NAME := cub3D
 CC := gcc
 
 # Compiler flags
-CFLAGS := -Wall -Wextra -Werror
+CFLAGS := -Wall -Wextra -Werror -w
 ifeq ($(OS),Linux)
 	CFLAGS += -D __LINUX__
 endif
